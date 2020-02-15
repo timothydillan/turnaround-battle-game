@@ -1,7 +1,7 @@
 # Python Assignment
 ### This is our github repository for our python assignment.
 
-**People included: **
+**People included:**
 
 * Evan Reginald Wijaya
 * Timothy Dillan Tandjung
