@@ -5,6 +5,7 @@
 
 * Evan Reginald Wijaya
 * Timothy Dillan Tandjung
-* Edbert Russel
 * Vu
 * Joe
+* Edbert Russel
+
