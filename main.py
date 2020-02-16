@@ -20,28 +20,6 @@ class Button():
     if self.rect.collidepoint(mouse) == True:
       return True
 
-def drawText(text, font, surface, x, y, color):
-#Simple function for drawing text onto the screen. Function contains expression
-#for word wrap.
-  if len(text) > 49:
-    textLine1 = text[:48]
-    textLine2 = text[48:]
-  else:
-    textLine1 = text
-    textLine2 = ""
-
-  textobj1 = font.render(textLine1,1,color)
-  textrect1 = textobj1.get_rect()
-  textrect1.topleft = (x,y)
-  surface.blit(textobj1,textrect1)
-  pygame.display.update()
-
-  textobj2 = font.render(textLine2,1,color)
-  textrect2 = textobj2.get_rect()
-  textrect2.topleft = (x,y+10)
-  surface.blit(textobj2,textrect2)
-  pygame.display.update()
-
 def animateText(text, font, surface, x, y, color):
 #Function for printing text. The first block of code acts as a word wrap creator
 #in the event that the string is too long to fit in the window. The animated portion
@@ -73,7 +51,6 @@ def animateText(text, font, surface, x, y, color):
     j += 1
 
 if __name__ == '__main__':
-    textlist = ['evan gay', 'evan sangat gay', 'evan kok gay sih?']
     #initialize the screen size
     width = 800
     height = 600
@@ -87,14 +64,17 @@ if __name__ == '__main__':
     green = (0, 255, 0)
 
     #initialize pygame
+    pygame.mixer.pre_init(44100, -16, 1, 1024)
     pygame.init()
     #initialize pygame mixer and bg song
     pygame.mixer.init()
     pygame.mixer.music.load("bgmusic.ogg")
-    #PLAY BACKGROUND MUSIC LETS GO BOYS
+
+    #PLAY BACKGROUND MUSIC
     pygame.mixer.music.play(-1)
 
-    font = pygame.font.SysFont("smallfont", 18)
+    textFont = pygame.font.SysFont("smallfont", 18)
+    titleFont = pygame.font.SysFont("flappybirdy", 108)
 
     #initialize screen size (w, h)
     screen = pygame.display.set_mode((width, height))
@@ -114,23 +94,31 @@ if __name__ == '__main__':
     warriorEnemyCharacter = pygame.image.load('warriorEnemy.png')
     #Initialize tanker enemy img
     tankerEnemyCharacter = pygame.image.load('tankerEnemy.png')
-    #display main screen
+
+    #Set character attributes
+    warriorATK = random.randint(5, 20)
+    warriorDEF = random.randint(1, 10)
+
+    tankerATK = random.randint(1, 10)
+    tankerDEF = random.randint(5, 15)
+
     #bg image
     screen.blit(backgroundImage,[0,0])
 
     #game start image and text
-    screen.blit(startImage, [310,100])
-    animateText("CLICK ANYWHERE TO START...", font, screen, 275, 500, white)
+    #screen.blit(startImage, [310,100])
+    animateText("PSB Battle Game ", titleFont, screen, 180, 100, white)
+    animateText("CLICK ANYWHERE TO START...", textFont, screen, 275, 500, white)
 
     #players
-    screen.blit(warriorCharacter, [0, 230])
-    screen.blit(tankerCharacter, [10, 370])
-    screen.blit(warriorCharacter, [0, 380])
+    screen.blit(warriorCharacter, [0, 320])
+    screen.blit(tankerCharacter, [40, 360])
+    screen.blit(warriorCharacter, [0, 400])
 
     #ai enemy
-    screen.blit(warriorEnemyCharacter, [630, 230])
-    screen.blit(tankerEnemyCharacter, [630, 370])
-    screen.blit(warriorEnemyCharacter, [630, 380])
+    screen.blit(tankerEnemyCharacter, [690, 320])
+    screen.blit(warriorEnemyCharacter, [650, 360])
+    screen.blit(warriorEnemyCharacter, [690, 400])
 
     pygame.display.update()
 
@@ -146,18 +134,18 @@ if __name__ == '__main__':
     #display image as button and assign cords
     warriorButton = Button()
     warriorButton.assignImage(warriorCharacter)
-    warriorButton.setCoords(250, 300)
+    warriorButton.setCoords(280, 347)
 
     tankButton = Button()
     tankButton.assignImage(tankerEnemyCharacter)
-    tankButton.setCoords(400, 340)
+    tankButton.setCoords(430, 340)
     #draw background again and draw the buttons
     screen.blit(backgroundImage, [0,0])
     warriorButton.drawButton(warriorCharacter)
     tankButton.drawButton(tankerEnemyCharacter)
 
     #update display
-    animateText("CHOOSE YOUR UNIT...", font, screen, 300, 100, white)
+    animateText("CHOOSE YOUR UNIT...", textFont, screen, 315, 100, white)
 
     #start the choosing of unit process
     warriorChoice = 0
@@ -170,24 +158,24 @@ if __name__ == '__main__':
                 sys.exit()
             elif event.type == MOUSEBUTTONDOWN:
                 mouse = pygame.mouse.get_pos()
+                #pygame.mixer.Sound.play(clickSound)
                 if warriorButton.pressed(mouse) == True:
                   choice = "Warrior"
                   playerImgList = warriorCharacter
                   warriorChoice += 1
-                  warriorText = font.render('%d Warrior' % (warriorChoice,), 1, (255, 255, 255))
+                  warriorText = textFont.render('%d Warrior' % (warriorChoice,), 1, (255, 255, 255))
                 if tankButton.pressed(mouse) == True:
                   choice = "Tank"
                   playerImgList = tankerEnemyCharacter
                   tankChoice += 1
-                  tankerText = font.render('%d Tanker' % (tankChoice,), 1, (255, 255, 255))
+                  tankerText = textFont.render('%d Tanker' % (tankChoice,), 1, (255, 255, 255))
 
     #lets draw a counter so that the user can see how many units that they chose
-    screen.blit(warriorText, [247, 300])
-    screen.blit(tankerText, [450, 325])
-    pygame.display.update()
+    screen.blit(warriorText, [280, 320])
+    screen.blit(tankerText, [443, 320])
 
     #continue the process
-    animateText("CLICK ANYWHERE TO CONTINUE...", font, screen, 270, 500, white)
+    animateText("CLICK ANYWHERE TO CONTINUE...", textFont, screen, 270, 500, white)
     startscreen = False
     while startscreen == False:
         for event in pygame.event.get():
@@ -196,6 +184,7 @@ if __name__ == '__main__':
                 sys.exit()
             elif event.type == MOUSEBUTTONDOWN:
                 startscreen = True
+
     '''TODO:
     1. Prompt users to assign names for each unit they choose and store the names
     2. Create AI Players (choose a random value from 3 arrays) and assign names to them using the
