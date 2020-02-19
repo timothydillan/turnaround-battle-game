@@ -20,6 +20,9 @@ class Button():
     if self.rect.collidepoint(mouse) == True:
       return True
 
+#def genAIPlayers():
+
+
 def animateText(text, font, surface, x, y, color):
 #Function for printing text. The first block of code acts as a word wrap creator
 #in the event that the string is too long to fit in the window. The animated portion
@@ -50,6 +53,9 @@ def animateText(text, font, surface, x, y, color):
     pygame.display.update()
     j += 1
 
+#https://stackoverflow.com/questions/419163/what-does-if-name-main-do/20158605#20158605
+#only run the code if its an entry point
+
 if __name__ == '__main__':
     #initialize the screen size
     width = 800
@@ -69,7 +75,7 @@ if __name__ == '__main__':
     #initialize pygame mixer and bg song
     pygame.mixer.init()
     pygame.mixer.music.load("bgmusic.ogg")
-
+    clickSound = pygame.mixer.Sound("clickSound.ogg")
     #PLAY BACKGROUND MUSIC
     pygame.mixer.music.play(-1)
 
@@ -120,6 +126,7 @@ if __name__ == '__main__':
     screen.blit(warriorEnemyCharacter, [650, 360])
     screen.blit(warriorEnemyCharacter, [690, 400])
 
+    # Lets use .update instead of .flip to only update portions of the screen
     pygame.display.update()
 
     start = False
@@ -158,7 +165,8 @@ if __name__ == '__main__':
                 sys.exit()
             elif event.type == MOUSEBUTTONDOWN:
                 mouse = pygame.mouse.get_pos()
-                #pygame.mixer.Sound.play(clickSound)
+                #should have a click sound. but its crashing, and idk how to upgrade it to python 3 > so shrug 
+                #clickSound.play()
                 if warriorButton.pressed(mouse) == True:
                   choice = "Warrior"
                   playerImgList = warriorCharacter
@@ -176,14 +184,95 @@ if __name__ == '__main__':
 
     #continue the process
     animateText("CLICK ANYWHERE TO CONTINUE...", textFont, screen, 270, 500, white)
-    startscreen = False
-    while startscreen == False:
+
+    pygame.display.update()
+
+    #ask for user input
+    startScreen = False
+    while startScreen == False:
         for event in pygame.event.get():
             if event.type == QUIT:
                 pygame.quit()
                 sys.exit()
             elif event.type == MOUSEBUTTONDOWN:
-                startscreen = True
+                startScreen = True
+
+    #check user choices, and draw characters based on conditions
+    if warriorChoice == 2 & tankChoice == 1:
+        screen.blit(warriorCharacter, [0, 320])
+        screen.blit(tankerCharacter, [40, 360])
+        screen.blit(warriorCharacter, [0, 400])
+    else:
+        screen.blit(warriorCharacter, [0, 320])
+        screen.blit(tankerCharacter, [40, 360])
+        screen.blit(tankerCharacter, [0, 400])
+
+    #START "AI" CREATION (ofc its possible to shorten the code and use functions instead, but lets just use this as a raw idea.)
+
+    #get a random integer to determine a character for the AI
+    randoChara1 = random.randint(1, 2)
+    randoChara2 = random.randint(1, 2)
+    randoChara3 = random.randint(1, 2)
+
+    #get a random integer between 10 and 99 (to make sure its 2 digits) for the AI name
+    playerDigit1 = random.randint(10, 99)
+    playerDigit2 = random.randint(10, 99)
+    playerDigit3 = random.randint(10, 99)
+
+    #pre-define images for each AI players
+    playerImg1 = warriorCharacter
+    playerImg2 = warriorCharacter
+    playerImg3 = warriorCharacter
+
+    #check if randomchar == 1, 1 == warrior, and 2 == tanker
+    if randoChara1 == 1:
+        playerImg1 = warriorEnemyCharacter
+        aiPlayer1Button = Button()
+        aiPlayer1Button.assignImage(playerImg1)
+        aiPlayer1Button.setCoords(690, 320)
+    else:
+        playerImg1 = tankerEnemyCharacter
+        aiPlayer1Button = Button()
+        aiPlayer1Button.assignImage(playerImg1)
+        aiPlayer1Button.setCoords(690, 320)
+
+    if randoChara2 == 1:
+        playerImg2 = warriorEnemyCharacter
+        aiPlayer2Button = Button()
+        aiPlayer2Button.assignImage(playerImg2)
+        aiPlayer2Button.setCoords(650, 360)
+    else:
+        playerImg2 = tankerEnemyCharacter
+        aiPlayer2Button = Button()
+        aiPlayer2Button.assignImage(playerImg2)
+        aiPlayer2Button.setCoords(650, 360)
+
+    if randoChara3 == 1:
+        playerImg3 = warriorEnemyCharacter
+        aiPlayer3Button = Button()
+        aiPlayer3Button.assignImage(playerImg3)
+        aiPlayer3Button.setCoords(690, 400)
+    else:
+        playerImg3 = tankerEnemyCharacter
+        aiPlayer3Button = Button()
+        aiPlayer3Button.assignImage(playerImg3)
+        aiPlayer3Button.setCoords(690, 400)
+
+    #initialize AI player names
+    aiPlayer1 = textFont.render('AI%d ' % (playerDigit1,), 1, (255, 255, 255))
+    aiPlayer2 = textFont.render('AI%d ' % (playerDigit2,), 1, (255, 255, 255))
+    aiPlayer3 = textFont.render('AI%d ' % (playerDigit3,), 1, (255, 255, 255))
+
+    #draw button in screen
+    aiPlayer1Button.drawButton(playerImg1)
+    aiPlayer2Button.drawButton(playerImg2)
+    aiPlayer3Button.drawButton(playerImg3)
+
+    #draw text above buttons (COORDS ARE STILL WRONG)
+    screen.blit(aiPlayer1, [280, 320])
+    screen.blit(aiPlayer2, [443, 320])
+    screen.blit(aiPlayer3, [443, 320])
+
 
     '''TODO:
     1. Prompt users to assign names for each unit they choose and store the names
