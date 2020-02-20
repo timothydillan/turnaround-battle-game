@@ -5,9 +5,10 @@
 
 * Evan Reginald Wijaya
 * Timothy Dillan Tandjung
-* Vu
-* Joe
+* Nguyen Tien Vu
+* Wong Chun Ting
 * Edbert Russel
+* Nguyen Trung Hieu
 
 ## Installation:
 
