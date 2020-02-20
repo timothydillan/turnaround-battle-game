@@ -9,3 +9,10 @@
 * Joe
 * Edbert Russel
 
+## Installation:
+
+* Please refer to [the Pygame documentation] (https://www.pygame.org/wiki/GettingStarted) to be able to run the game.
+
+* Run the game by using the [cd] command and then type python main.py
+
+* Also, install the fonts that are on the fonts folder.
