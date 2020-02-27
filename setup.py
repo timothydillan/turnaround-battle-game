@@ -65,7 +65,7 @@ def Title(text, x, y):
 def clickSound():
     #A function used to play a sound that we define.
     sound = pygame.mixer.Sound('Sound/clickSound.ogg')
-    #sound.play()
+    sound.play()
 
 def MenuButton(msg, x, y, w, h, ic, ac, action=None):
     #Similar to the button class, this function also creates a button,
