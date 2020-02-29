@@ -18,8 +18,7 @@ def __main__():
         #Create main menu buttons
         MenuButton("New Game", 325, 400, 150, 30, Color.white, Color.Gray, "play")
         MenuButton("Load Game", 325, 450, 150, 30, Color.white, Color.Gray, "load")
-        MenuButton("Option", 325, 500, 150, 30, Color.white, Color.Gray, 'option')
-        MenuButton("Quit", 325, 550, 150, 30,  Color.white, Color.Gray, "quit")
+        MenuButton("Quit", 325, 500, 150, 30,  Color.white, Color.Gray, "quit")
         #Render PSB Battle Game as the title
         Title('PSB Battle Game', Variables.textX, Variables.textY)
         #Draw players for the main menu (UI Purposes)

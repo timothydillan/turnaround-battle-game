@@ -111,9 +111,6 @@ def MenuButton(msg, x, y, w, h, ic, ac, action=None):
             elif action == 'load':
                 #if the load game button is clicked, load text file from saved game and continue game
                 clickSound()
-            elif action == 'option':
-                #if the option game button is clicked, show options on reducing volume, etc.
-                clickSound()
             elif action == "quit":
                 #if the quit game button is clicked, quit the game.
                 clickSound()
@@ -179,8 +176,9 @@ def TextBox(font):
         warriorButton.drawButton(Variables.warriorImg)
         tankButton.drawButton(Variables.tankerEnemyImg)
 
-        Dialog('Welcome to PSB Battle Game', 100, 100)
-        Dialog('Choose your 3 units', 100, 150)
+        Dialog('Choose 3 units to start your adventure!', 100, 100)
+        Dialog('AND Give a name for each of your players!', 100, 150)
+        
         screen.blit(textBox.image, textBox.rect)
         pygame.display.update()
         for e in pygame.event.get():
@@ -199,7 +197,7 @@ def TextBox(font):
                 if e.key == pygame.K_BACKSPACE:
                     textBox.text = textBox.text[:-1]
                     textBox.Update()
-                if e.key == pygame.K_RETURN or pygame.K_EN:
+                if e.key == pygame.K_RETURN:
                     if len(textBox.text) > 0:
                         name.append(textBox.text)
                         textBox.text = ""
