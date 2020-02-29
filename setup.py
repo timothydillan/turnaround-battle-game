@@ -175,9 +175,9 @@ def TextBox():
         tankButton.setCoords(500, 340)
         warriorButton.drawButton(Variables.warriorImg)
         tankButton.drawButton(Variables.tankerEnemyImg)
-
-        Dialog('Choose 3 units to start your adventure!', 100, 100)
-        Dialog('AND Give a name for each of your players!', 100, 150)
+    
+        Dialog('Give a name for each of your players!', 100, 100)
+        Dialog('Choose   units to start your adventure!', 100, 150)
 
         screen.blit(textBox.image, textBox.rect)
         pygame.display.update()
@@ -228,9 +228,9 @@ def gameLoop():
     warriorButton.drawButton(Variables.warriorImg)
     tankButton.drawButton(Variables.tankerEnemyImg)
 
-    #Show some welcoming Tex
+    #Show some welcoming Text
     Dialog('Welcome to the game!', 100, 100)
-    Dialog('Choose 3 units to start your adventure!', 100, 150)
+    Dialog('Choose   units to start your adventure!', 100, 150)
 
     #Update the display so that it can continue to the new frame.
     pygame.display.update()
@@ -241,6 +241,8 @@ def gameLoop():
     tankChoice = 0
     #while warriorchoice + tankchoice is less than 3, we create
     while warriorChoice + tankChoice < 3:
+        option = 3 - (warriorChoice + tankChoice)
+        Dialog('       {}                             '.format(option), 100, 150)
         #a nested loop (for loop) that loops through the possible pygame event
         for event in pygame.event.get():
             if event.type == QUIT:
@@ -259,6 +261,7 @@ def gameLoop():
                   warriorText = Variables.fontText.render('%d Warrior' % (warriorChoice,), 1, (255, 255, 255))
                   #make a click sound so the user knows that they've clicked on the button
                   clickSound()
+                  option -= 1
                   #ask user to input name
                   TextBox()
                 #now check if the tankbutton is pressed by the mouse
@@ -270,6 +273,7 @@ def gameLoop():
                   tankerText = Variables.fontText.render('%d Tanker' % (tankChoice,), 1, (255, 255, 255))
                   #make a click sound so the user knows that they've clicked on the button
                   clickSound()
+                  option -= 1
                   # ask user to input name
                   TextBox()
     #after the loop ends, create a new frame
