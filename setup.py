@@ -162,7 +162,7 @@ def startScreen():
                 start = True
 
 
-def TextBox(font):
+def TextBox():
     running = True
     while running:
         screen.blit(Variables.bgImage, [0, 0])
@@ -178,7 +178,7 @@ def TextBox(font):
 
         Dialog('Choose 3 units to start your adventure!', 100, 100)
         Dialog('AND Give a name for each of your players!', 100, 150)
-        
+
         screen.blit(textBox.image, textBox.rect)
         pygame.display.update()
         for e in pygame.event.get():
@@ -260,7 +260,7 @@ def gameLoop():
                   #make a click sound so the user knows that they've clicked on the button
                   clickSound()
                   #ask user to input name
-                  TextBox(pygame.font.Font(None, 30))
+                  TextBox()
                 #now check if the tankbutton is pressed by the mouse
                 if tankButton.pressed(mouse) == True:
                   #add tankChoice by 1 to make sure that the loop stops if the units reaches 3.
@@ -271,7 +271,7 @@ def gameLoop():
                   #make a click sound so the user knows that they've clicked on the button
                   clickSound()
                   # ask user to input name
-                  TextBox(pygame.font.Font(None, 30))
+                  TextBox()
     #after the loop ends, create a new frame
     screen.blit(Variables.bgImage, [0, 0])
     Dialog("CLICK ANYWHERE TO CONTINUE...", 100, 100)
