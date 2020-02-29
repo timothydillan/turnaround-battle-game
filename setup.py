@@ -7,6 +7,8 @@ from main import *
 pygame.mixer.pre_init(44100, -16, 2, 4096)
 pygame.init()
 screen = pygame.display.set_mode((800, 600))
+validChars = "`1234567890-=qwertyuiop[]\\asdfghjkl;'zxcvbnm,./"
+shiftChars = '~!@#$%^&*()_+QWERTYUIOP{}|ASDFGHJKL:"ZXCVBNM<>?'
 
 class Variables():
     #Declare variables in a class so that its easier to call and cleaner.
@@ -23,6 +25,7 @@ class Variables():
     tankerImg = pygame.image.load('images/tanker.png')
     warriorEnemyImg = pygame.image.load('images/warriorEnemy.png')
     tankerEnemyImg = pygame.image.load('images/tankerEnemy.png')
+    buttonImg = pygame.image.load('images/button.png')
     player1X = 150
     player1Y = 385
     player2X = 50
@@ -56,6 +59,28 @@ class Button():
   #Function for determining whether or not a mouse click is inside a button object
     if self.rect.collidepoint(mouse) == True:
       return True
+
+class TextBox(pygame.sprite.Sprite):
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+        self.text = ""
+        self.font = pygame.font.Font(None, 30)
+        self.image = self.font.render('Input character name: ', False, Color.white)
+        self.rect = self.image.get_rect()
+
+    def AddChar(self, char):
+        global shiftDown
+        if char in validChars and not shiftDown:
+            self.text += char
+        elif char in validChars and shiftDown:
+            self.text += shiftChars[validChars.index(char)]
+        self.Update()
+
+    def Update(self):
+        old_rect_pos = self.rect.center
+        self.image = self.font.render(self.text, False, Color.white)
+        self.rect = self.image.get_rect()
+        self.rect.center = old_rect_pos
 
 def Title(text, x, y):
     #A function used for creating a title text.
@@ -122,6 +147,11 @@ def Dialog(text, x, y):
     text = Variables.fontText.render(text, True, (255, 255, 255))
     screen.blit(text, (x, y))
 
+textBox = TextBox()
+shiftDown = False
+textBox.rect.center = [400, 500]
+name = []
+
 def startScreen():
     #This function is used for the "click on anywhere" part of the game
     start = False
@@ -134,9 +164,58 @@ def startScreen():
                 #Check if the user clicks anywhere and set the boolean to true
                 start = True
 
+
+def TextBox(font):
+    running = True
+    while running:
+        screen.blit(Variables.bgImage, [0, 0])
+        warriorButton = Button()
+        warriorButton.assignImage(Variables.warriorImg)
+        warriorButton.setCoords(200, 350)
+
+        tankButton = Button()
+        tankButton.assignImage(Variables.tankerEnemyImg)
+        tankButton.setCoords(500, 340)
+        warriorButton.drawButton(Variables.warriorImg)
+        tankButton.drawButton(Variables.tankerEnemyImg)
+
+        Dialog('Welcome to PSB Battle Game', 100, 100)
+        Dialog('Choose your 3 units', 100, 150)
+        screen.blit(textBox.image, textBox.rect)
+        pygame.display.update()
+        for e in pygame.event.get():
+            if e.type == pygame.QUIT:
+                running = False
+            if e.type == pygame.KEYUP:
+                if e.key in [pygame.K_RSHIFT, pygame.K_LSHIFT]:
+                    shiftDown = False
+            if e.type == pygame.KEYDOWN:
+                textBox.AddChar(pygame.key.name(e.key))
+                if e.key == pygame.K_SPACE:
+                    textBox.text += " "
+                    textBox.Update()
+                if e.key in [pygame.K_RSHIFT, pygame.K_LSHIFT]:
+                    shiftDown = True
+                if e.key == pygame.K_BACKSPACE:
+                    textBox.text = textBox.text[:-1]
+                    textBox.Update()
+                if e.key == pygame.K_RETURN or pygame.K_EN:
+                    if len(textBox.text) > 0:
+                        name.append(textBox.text)
+                        textBox.text = ""
+                        textBox.Update()
+                        running = False
+
 def gameLoop():
     #Start game by creating a new frame (by loading a bg image)
     screen.blit(Variables.bgImage, [0, 0])
+
+    '''#Create button
+    AttackButton = Button()
+    AttackButton.assignImage(Variables.buttonImg)
+    AttackButton.setCoords(200, 300) #coords depends
+    AttackButton.drawButton(Variables.buttonImg)
+    Dialog('ATTACK', 300, 200) #coords depends'''
 
     #Declare units as buttons so that users can pick them.
     warriorButton = Button()
@@ -182,6 +261,8 @@ def gameLoop():
                   warriorText = Variables.fontText.render('%d Warrior' % (warriorChoice,), 1, (255, 255, 255))
                   #make a click sound so the user knows that they've clicked on the button
                   clickSound()
+                  #ask user to input name
+                  TextBox(pygame.font.Font(None, 30))
                 #now check if the tankbutton is pressed by the mouse
                 if tankButton.pressed(mouse) == True:
                   #add tankChoice by 1 to make sure that the loop stops if the units reaches 3.
@@ -191,6 +272,8 @@ def gameLoop():
                   tankerText = Variables.fontText.render('%d Tanker' % (tankChoice,), 1, (255, 255, 255))
                   #make a click sound so the user knows that they've clicked on the button
                   clickSound()
+                  # ask user to input name
+                  TextBox(pygame.font.Font(None, 30))
     #after the loop ends, create a new frame
     screen.blit(Variables.bgImage, [0, 0])
     Dialog("CLICK ANYWHERE TO CONTINUE...", 100, 100)
@@ -210,3 +293,5 @@ def gameLoop():
     #elements before (not directly, we're just removing the rendered things)
     pygame.display.update()
     startScreen()
+
+
