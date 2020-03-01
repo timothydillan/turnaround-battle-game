@@ -242,7 +242,8 @@ def gameLoop():
     #while warriorchoice + tankchoice is less than 3, we create
     while warriorChoice + tankChoice < 3:
         option = 3 - (warriorChoice + tankChoice)
-        Dialog('       {}                             '.format(option), 100, 150)
+        Dialog('          {}                             '.format(option), 100, 150)
+        pygame.display.update()
         #a nested loop (for loop) that loops through the possible pygame event
         for event in pygame.event.get():
             if event.type == QUIT:
@@ -261,7 +262,6 @@ def gameLoop():
                   warriorText = Variables.fontText.render('%d Warrior' % (warriorChoice,), 1, (255, 255, 255))
                   #make a click sound so the user knows that they've clicked on the button
                   clickSound()
-                  option -= 1
                   #ask user to input name
                   TextBox()
                 #now check if the tankbutton is pressed by the mouse
@@ -273,7 +273,6 @@ def gameLoop():
                   tankerText = Variables.fontText.render('%d Tanker' % (tankChoice,), 1, (255, 255, 255))
                   #make a click sound so the user knows that they've clicked on the button
                   clickSound()
-                  option -= 1
                   # ask user to input name
                   TextBox()
     #after the loop ends, create a new frame
