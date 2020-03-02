@@ -67,12 +67,12 @@ class TextBox(pygame.sprite.Sprite):
         self.font = pygame.font.Font(None, 30)
         self.image = self.font.render('Input character name: ', False, Color.white)
         self.rect = self.image.get_rect()
+        self.shifted = False
 
     def AddChar(self, char):
-        global shiftDown
-        if char in validChars and not shiftDown:
+        if char in validChars and not self.shifted:
             self.text += char
-        elif char in validChars and shiftDown:
+        elif char in validChars and self.shifted:
             self.text += shiftChars[validChars.index(char)]
         self.Update()
 
@@ -145,7 +145,6 @@ def Dialog(text, x, y):
     screen.blit(text, (x, y))
 
 textBox = TextBox()
-shiftDown = False
 textBox.rect.center = [400, 500]
 name = []
 
@@ -186,14 +185,14 @@ def TextBox():
                 running = False
             if e.type == pygame.KEYUP:
                 if e.key in [pygame.K_RSHIFT, pygame.K_LSHIFT]:
-                    shiftDown = False
+                    textBox.shifted = False
             if e.type == pygame.KEYDOWN:
                 textBox.AddChar(pygame.key.name(e.key))
                 if e.key == pygame.K_SPACE:
                     textBox.text += " "
                     textBox.Update()
                 if e.key in [pygame.K_RSHIFT, pygame.K_LSHIFT]:
-                    shiftDown = True
+                    textBox.shifted = True
                 if e.key == pygame.K_BACKSPACE:
                     textBox.text = textBox.text[:-1]
                     textBox.Update()
@@ -294,5 +293,4 @@ def gameLoop():
     #elements before (not directly, we're just removing the rendered things)
     pygame.display.update()
     startScreen()
-
 
