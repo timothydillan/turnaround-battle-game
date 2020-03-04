@@ -5,7 +5,7 @@ from setup import *
 
 def __main__():
     # Play the background music
-    #bgMusic()
+    bgMusic()
     run = True
     while run:
         for event in pygame.event.get():
