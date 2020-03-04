@@ -20,7 +20,7 @@ def __main__():
         MenuButton("Load Game", 325, 450, 150, 30, Color.white, Color.Gray, "load")
         MenuButton("Quit", 325, 500, 150, 30,  Color.white, Color.Gray, "quit")
         # Render PSB Battle Game as the title
-        Title('PSB Battle Game', Variables.textX, Variables.textY)
+        Title('Game', Variables.textX, Variables.textY)
         # Draw players for the main menu (UI Purposes)
         Player()
         # Update the screen so that we can see everything we rendered before.
