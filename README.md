@@ -14,4 +14,4 @@ Group Members:
 5. Nguyen Tien Vu
 6. Nguyen Trung Hieu
 
-If you download/is copying this project, pelase contact us, lol.
+If you downloaded or is copying this project, pelase contact us, lol.
