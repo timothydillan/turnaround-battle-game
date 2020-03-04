@@ -424,7 +424,6 @@ def gameLoop():
     team[2].name = name[2]
     # generate ai players here
     ai = genAIPlayers(team)
-    print('AI Name 1: ' + str(ai[0].name))
 
     # after the loop ends, create a new frame
     screen.blit(Variables.bgImage, [0, 0])
@@ -475,15 +474,12 @@ def gameLoop():
                 if playerATKButton[0].pressed(mouse):
                     clickSound()
                     firstPlayer += 1
-                    print(firstPlayer)
                 if playerATKButton[1].pressed(mouse):
                     clickSound()
                     secondPlayer += 1
-                    print(secondPlayer)
                 if playerATKButton[2].pressed(mouse):
                     clickSound()
                     thirdPlayer += 1
-                    print(thirdPlayer)
 
     # Create new frame
     screen.blit(Variables.bgImage, [0, 0])
@@ -522,56 +518,85 @@ def gameLoop():
     while len(team) >= 1 and len(ai) >= 1:
 
         num_attacker = 0
-        num_defender = 0
+        num_enemy = 0
         defender = 0
         attacker = 0
 
         while num_attacker < 1:
             if firstPlayer == 1:
-                attacker = team[0]
-                num_attacker += 1
-                firstPlayer = 0
-            if secondPlayer == 1:
-                attacker = team[1]
-                num_attacker += 1
-                secondPlayer = 0
-            if thirdPlayer == 1:
-                attacker = team[2]
-                num_attacker += 1
-                thirdPlayer = 1
+                if team[0].health > 0:
+                    attacker = team[0]
+                    num_attacker += 1
+                    firstPlayer = 0
+                else:
+                    print("Attacker is dead already")
+                    print("Choose another attacker")
 
-        while num_defender < 1:
+            if secondPlayer == 1:
+                if team[1].health > 1:
+                    attacker = team[1]
+                    num_attacker += 1
+                    secondPlayer = 0
+                else:
+                    print("Attacker is dead already")
+                    print("Choose another attacker")
+
+            if thirdPlayer == 1:
+                if team[2].health > 1:
+                    attacker = team[2]
+                    num_attacker += 1
+                    thirdPlayer = 0
+                else:
+                    print("Attacker is dead already")
+                    print("Choose another attacker")
+
+        while num_enemy < 1:
             if firstAI == 1:
-                defender = ai[0]
-                num_defender += 1
-                firstAI = 0
+                if ai[0].health > 0:
+                    defender = ai[0]
+                    num_enemy += 1
+                    firstAI = 0
+                else:
+                    print("Defender is dead already")
+                    print("Choose another attacker")
             if secondAI == 1:
-                defender = ai[1]
-                num_defender += 1
-                secondAI = 0
+                if ai[1].health > 0:
+                    defender = ai[1]
+                    num_enemy += 1
+                    secondAI = 0
+                else:
+                    print("Defender is dead already")
+                    print("Choose another attacker")
             if thirdAI == 1:
-                defender = ai[2]
-                num_defender += 1
-                thirdAI = 0
+                if ai[2].health > 0:
+                    defender = ai[2]
+                    num_enemy += 1
+                    thirdAI = 0
+                else:
+                    print("Defender is dead already")
+                    print("Choose another attacker")
 
         user_turn = attack_func(attacker, defender)
 
-        print(f'''level {attacker.rank} {attacker.name} deals {user_turn} dmg to {defender.name} and gained {user_turn} exp
-        {attacker.name} attack: {attacker.attack} defence: {attacker.defend}
-        total exp: {attacker.experience}, remaining hp = {attacker.health}''')
+        print(
+            f'''level {attacker.rank} {attacker.name} deals {user_turn} dmg to {defender.name} and gained {user_turn} exp
+            {attacker.name} attack: {attacker.attack} defence: {attacker.defend}
+            total exp: {attacker.experience}, remaining hp = {attacker.hp}''')
 
-        print(f'''level {defender.rank} {defender.name} received {user_turn} dmg frome {attacker.name} and gained {defender.defend} exp
-        {defender.name} attack: {defender.attack} defence: {defender.defend}
-        total exp: {defender.experience}, remaining hp = {defender.health}''')
+        print(
+            f'''level {defender.rank} {defender.name} received {user_turn} dmg frome {attacker.name} and gained {defender.defend} exp
+            {defender.name} attack: {defender.attack} defence: {defender.defend}
+            total exp: {defender.experience}, remaining hp = {defender.hp}''')
 
         attacker = ai_attackers(ai)
         defender = user_defenders(team)
         ai_turn = attack_func(attacker, defender)
 
         print(f'''level {attacker.rank} {attacker.name} deals {ai_turn} dmg to {defender.name} and gained {ai_turn} exp
-        {attacker.name} attack: {attacker.attack} defence: {attacker.defend}
-        total exp: {attacker.experience}, remaining hp = {attacker.health}''')
+            {attacker.name} attack: {attacker.attack} defence: {attacker.defend}
+            total exp: {attacker.exp}, remaining hp = {attacker.hp}''')
 
-        print(f'''level {defender.rank} {defender.name} received {ai_turn} dmg from {attacker.name} and gained {defender.defend} exp
-        {defender.name} attack: {defender.attack} defence: {defender.defend}
-        total exp: {defender.experience}, remaining hp = {defender.health}''')
+        print(
+            f'''level {defender.level} {defender.name} received {ai_turn} dmg from {attacker.name} and gained {defender.defence} exp
+            {defender.name} attack: {defender.attack} defence: {defender.defence}
+            total exp: {defender.exp}, remaining hp = {defender.hp}''')
