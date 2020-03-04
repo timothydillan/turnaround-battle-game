@@ -5,7 +5,7 @@ from setup import *
 
 def __main__():
     # Play the background music
-    bgMusic()
+    #bgMusic()
     run = True
     while run:
         for event in pygame.event.get():
@@ -16,11 +16,11 @@ def __main__():
         #Create a new frame
         screen.blit(Variables.bgImage, [0, 0])
         # Create main menu buttons
-        MenuButton("New Game", 325, 400, 150, 30, Color.white, Color.Gray, "play")
-        MenuButton("Load Game", 325, 450, 150, 30, Color.white, Color.Gray, "load")
-        MenuButton("Quit", 325, 500, 150, 30,  Color.white, Color.Gray, "quit")
+        MenuButton("New Game", 325, 400, 150, 30, Color.white, Color.gray, "play")
+        MenuButton("Load Game", 325, 450, 150, 30, Color.white, Color.gray, "load")
+        MenuButton("Quit", 325, 500, 150, 30,  Color.white, Color.gray, "quit")
         # Render PSB Battle Game as the title
-        Title('Game', Variables.textX, Variables.textY)
+        Title('PSB Battle Game', Variables.textX, Variables.textY)
         # Draw players for the main menu (UI Purposes)
         Player()
         # Update the screen so that we can see everything we rendered before.

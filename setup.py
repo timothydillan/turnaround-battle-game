@@ -21,6 +21,7 @@ class Variables():
     fpsClock = pygame.time.Clock()
     font = pygame.font.Font('font/SHPinscher-Regular.otf', 90)
     fontText = pygame.font.Font("font/slkscr.ttf", 24)
+    fontSub = pygame.font.Font("font/slkscr.ttf", 16)
     pygame.display.set_caption("RPG Game")
     bgImage = pygame.image.load('images/bg.png')
     icon = pygame.image.load("images/icon.png")
@@ -31,6 +32,7 @@ class Variables():
     warriorEnemyImg = pygame.image.load('images/warriorEnemy.png')
     tankerEnemyImg = pygame.image.load('images/tankerEnemy.png')
     buttonImg = pygame.image.load('images/button.png')
+    skullImg = pygame.image.load('images/skull.png')
     player1X = 150
     player1Y = 385
     player2X = 50
@@ -46,8 +48,10 @@ class Variables():
 class Color():
     black = (0, 0, 0)
     white = (255, 255, 255)
-    Gray = (192, 192, 192)
+    gray = (192, 192, 192)
     darkGray = (64, 64, 64)
+    red = (255, 0, 0)
+    green = (127, 255, 0)
 
 
 class Button():
@@ -69,7 +73,6 @@ class Button():
         # Function for determining whether or not a mouse click is inside a button object
         if self.rect.collidepoint(mouse) == True:
             return True
-
 
 class TextBox(pygame.sprite.Sprite):
     #A "TextBox" class so that we're able to input things unto the screen.
@@ -245,114 +248,116 @@ def genAIPlayers(copyTeam):
     return aiTeam
 
 
-def drawAIPlayers(button0, button1, button2, job0, job1, job2):
+def drawAIPlayers(button0, button1, button2, job0, job1, job2, hp0, hp1, hp2):
 
-    if job0 == "Warrior":
-        button0.assignImage(Variables.warriorEnemyImg)
-        button0.setCoords(690, 290)
-        button0.drawButton(Variables.warriorEnemyImg)
+    if hp0 > 0:
+        if job0 == "Warrior":
+            button0.assignImage(Variables.warriorEnemyImg)
+            button0.setCoords(690, 270)
+            button0.drawButton(Variables.warriorEnemyImg)
+        else:
+            button0.assignImage(Variables.tankerEnemyImg)
+            button0.setCoords(690, 270)
+            button0.drawButton(Variables.tankerEnemyImg)
     else:
-        button0.assignImage(Variables.tankerEnemyImg)
-        button0.setCoords(690, 290)
-        button0.drawButton(Variables.tankerEnemyImg)
+        button0.setCoords(0,0)
+        screen.blit(Variables.skullImg, [690, 270])
 
-    if job1 == "Warrior":
-        button1.assignImage(Variables.warriorEnemyImg)
-        button1.setCoords(620, 350)
-        button1.drawButton(Variables.warriorEnemyImg)
+    if hp1 > 0:
+        if job1 == "Warrior":
+            button1.assignImage(Variables.warriorEnemyImg)
+            button1.setCoords(570, 350)
+            button1.drawButton(Variables.warriorEnemyImg)
+        else:
+            button1.assignImage(Variables.tankerEnemyImg)
+            button1.setCoords(570, 350)
+            button1.drawButton(Variables.tankerEnemyImg)
     else:
-        button1.assignImage(Variables.tankerEnemyImg)
-        button1.setCoords(620, 350)
-        button1.drawButton(Variables.tankerEnemyImg)
+        button1.setCoords(0, 0)
+        screen.blit(Variables.skullImg, [570, 350])
 
-    if job2 == "Warrior":
-        button2.assignImage(Variables.warriorEnemyImg)
-        button2.setCoords(690, 405)
-        button2.drawButton(Variables.warriorEnemyImg)
+    if hp2 > 0:
+        if job2 == "Warrior":
+            button2.assignImage(Variables.warriorEnemyImg)
+            button2.setCoords(690, 420)
+            button2.drawButton(Variables.warriorEnemyImg)
+        else:
+            button2.assignImage(Variables.tankerEnemyImg)
+            button2.setCoords(690, 420)
+            button2.drawButton(Variables.tankerEnemyImg)
     else:
-        button2.assignImage(Variables.tankerEnemyImg)
-        button2.setCoords(690, 405)
-        button2.drawButton(Variables.tankerEnemyImg)
+        button2.setCoords(0, 0)
+        screen.blit(Variables.skullImg, [690, 420])
 
-def drawPlayers(button0, button1, button2, job0, job1, job2):
-
-    if job0 == "Warrior":
-        button0.assignImage(Variables.warriorImg)
-        button0.setCoords(0, 290)
-        button0.drawButton(Variables.warriorImg)
+def drawPlayers(button0, button1, button2, job0, job1, job2, hp0, hp1, hp2):
+    if hp0 > 0:
+        if job0 == "Warrior":
+            button0.assignImage(Variables.warriorImg)
+            button0.setCoords(0, 270)
+            button0.drawButton(Variables.warriorImg)
+        else:
+            button0.assignImage(Variables.tankerImg)
+            button0.setCoords(0, 270)
+            button0.drawButton(Variables.tankerImg)
     else:
-        button0.assignImage(Variables.tankerImg)
-        button0.setCoords(0, 290)
-        button0.drawButton(Variables.tankerImg)
+        button0.setCoords(0, 0)
+        screen.blit(Variables.skullImg, [0, 270])
 
-    if job1 == "Warrior":
-        button1.assignImage(Variables.warriorImg)
-        button1.setCoords(70, 350)
-        button1.drawButton(Variables.warriorImg)
+    if hp1 > 0:
+        if job1 == "Warrior":
+            button1.assignImage(Variables.warriorImg)
+            button1.setCoords(120, 350)
+            button1.drawButton(Variables.warriorImg)
+        else:
+            button1.assignImage(Variables.tankerImg)
+            button1.setCoords(120, 350)
+            button1.drawButton(Variables.tankerImg)
     else:
-        button1.assignImage(Variables.tankerImg)
-        button1.setCoords(70, 350)
-        button1.drawButton(Variables.tankerImg)
+        button1.setCoords(0, 0)
+        screen.blit(Variables.skullImg, [120, 350])
 
-    if job2 == "Warrior":
-        button2.assignImage(Variables.warriorImg)
-        button2.setCoords(0, 405)
-        button2.drawButton(Variables.warriorImg)
+    if hp2 > 0:
+        if job2 == "Warrior":
+            button2.assignImage(Variables.warriorImg)
+            button2.setCoords(0, 420)
+            button2.drawButton(Variables.warriorImg)
+        else:
+            button2.assignImage(Variables.tankerImg)
+            button2.setCoords(0, 420)
+            button2.drawButton(Variables.tankerImg)
     else:
-        button2.assignImage(Variables.tankerImg)
-        button2.setCoords(0, 405)
-        button2.drawButton(Variables.tankerImg)
+        button2.setCoords(0, 0)
+        screen.blit(Variables.skullImg, [0, 420])
 
 def attack_func(turn_attacker, turn_defender):
-    ranNum = randint(-5, 10)
-    dmg = turn_attacker.attack + ranNum - turn_defender.defend
+    ranNum = randint(5, 10)
+    dmg = int(turn_attacker.attack + ranNum - turn_defender.defend)
     if dmg > 0:
         turn_defender.health -= dmg
         turn_attacker.experience += dmg
         turn_defender.experience += turn_defender.defend
-        if turn_attacker.experience > 99:
-            turn_attacker.rank += 1
-            turn_attacker.attack = round(turn_attacker.attack * 1.05, 2)
-            turn_attacker.defend = round(turn_attacker.defend * 1.05, 2)
-            turn_attacker.experience = 0
-
-        if turn_defender.experience > 99:
-            turn_defender.rank += 1
-            turn_defender.attack = round(turn_defender.attack * 1.05, 2)
-            turn_defender.defend = round(turn_defender.defend * 1.05, 2)
-            turn_attacker.experience = 0
+        Tanker.check_level_up(turn_attacker)
+        Tanker.check_level_up(turn_defender)
+        Tanker.check_die(turn_attacker)
+        Tanker.check_die(turn_defender)
         return dmg
     elif dmg < 0:
-        turn_attacker.experience += int(abs(turn_attacker.attack + ranNum))
-        turn_defender.experience += int(abs(turn_attacker.attack + ranNum))
-        if turn_attacker.experience > 99:
-            turn_attacker.rank += 1
-            turn_attacker.attack = turn_attacker.attack * 1.05
-            turn_attacker.defend = turn_attacker.defend * 1.05
-            turn_attacker.experience = 0
-
-        if turn_defender.experience > 99:
-            turn_defender.rank += 1
-            turn_defender.attack = turn_defender.attack * 1.05
-            turn_defender.defend = turn_defender.defend * 1.05
-            turn_attacker.experience = 0
-
+        turn_attacker.experience += int(turn_attacker.attack + ranNum)
+        turn_defender.experience += int(turn_attacker.attack + ranNum)
+        Tanker.check_level_up(turn_attacker)
+        Tanker.check_level_up(turn_defender)
+        Tanker.check_die(turn_attacker)
+        Tanker.check_die(turn_defender)
         return dmg
     else:
         return dmg
 
-
-def ai_attackers(ai_team):
+def ai_attackers(ai_team, target_team):
     ai_team_attack = [ai_team[0].attack, ai_team[1].attack, ai_team[2].attack]
     ai_attacker = ai_team[ai_team_attack.index(max(ai_team_attack))]
-    return ai_attacker
-
-
-def user_defenders(user_teams):
-    user_team_defend = [user_teams[0].defend, user_teams[1].defend, user_teams[2].defend]
-    user_defender = user_teams[user_team_defend.index(min(user_team_defend))]
-    return user_defender
-
+    user_team_defend = [target_team[0].defend, target_team[1].defend, target_team[2].defend]
+    user_defender = target_team[user_team_defend.index(min(user_team_defend))]
+    return ai_attacker, user_defender
 
 def gameLoop():
     # Start game by creating a new frame (by loading a bg image)
@@ -454,68 +459,123 @@ def gameLoop():
     playerATKButton = [Button(), Button(), Button()]
     aiPlayerButtons = [Button(), Button(), Button()]
 
-    drawPlayers(playerATKButton[0], playerATKButton[1], playerATKButton[2], team[0].job, team[1].job, team[2].job)
+    user_team_hp = team[0].health + team[1].health + team[2].health
+    ai_team_hp = ai[0].health + ai[1].health + ai[2].health
+    while user_team_hp > 0 and ai_team_hp > 0:
 
-    Dialog("CLICK ON WHICH UNIT YOU WANT TO ATTACK WITH...", 70, 100)
+        firstPlayer = 0
+        secondPlayer = 0
+        thirdPlayer = 0
+        firstAI = 0
+        secondAI = 0
+        thirdAI = 0
 
-    pygame.display.update()
+        drawPlayers(playerATKButton[0], playerATKButton[1], playerATKButton[2], team[0].job, team[1].job, team[2].job, team[0].health, team[1].health, team[2].health)
 
-    firstPlayer = 0
-    secondPlayer = 0
-    thirdPlayer = 0
+        # TODO: Make this into a function so its cleaner to see
 
-    while (firstPlayer or secondPlayer or thirdPlayer) < 1:
-        for event in pygame.event.get():
-            if event.type == QUIT:
-                pygame.quit()
-                sys.exit()
-            elif event.type == MOUSEBUTTONDOWN:
-                mouse = pygame.mouse.get_pos()
-                if playerATKButton[0].pressed(mouse):
-                    clickSound()
-                    firstPlayer += 1
-                if playerATKButton[1].pressed(mouse):
-                    clickSound()
-                    secondPlayer += 1
-                if playerATKButton[2].pressed(mouse):
-                    clickSound()
-                    thirdPlayer += 1
+        playerName1 = Variables.fontSub.render(str(team[0].name), True, Color.white)
+        playerName2 = Variables.fontSub.render(str(team[1].name), True, Color.white)
+        playerName3 = Variables.fontSub.render(str(team[2].name), True, Color.white)
 
-    # Create new frame
-    screen.blit(Variables.bgImage, [0, 0])
+        playerHP1 = Variables.fontSub.render("HP: " + str(team[0].health), True, Color.white)
+        playerHP2 = Variables.fontSub.render("HP: " + str(team[1].health), True, Color.white)
+        playerHP3 = Variables.fontSub.render("HP: " + str(team[2].health), True, Color.white)
 
-    drawAIPlayers(aiPlayerButtons[0], aiPlayerButtons[1], aiPlayerButtons[2], ai[0].job, ai[1].job, ai[2].job)
+        playerATK1 = Variables.fontSub.render("ATK: " + str(team[0].attack), True, Color.white)
+        playerATK2 = Variables.fontSub.render("ATK: " + str(team[1].attack), True, Color.white)
+        playerATK3 = Variables.fontSub.render("ATK: " + str(team[2].attack), True, Color.white)
 
-    Dialog("CLICK ON WHICH ENEMY YOU WANT TO ATTACK...", 100, 100)
+        screen.blit(playerName1, [20, 230])
+        screen.blit(playerName2, [140, 315])
+        screen.blit(playerName3, [20, 390])
 
-    pygame.display.update()
+        screen.blit(playerHP1, [20, 250])
+        screen.blit(playerHP2, [140, 335])
+        screen.blit(playerHP3, [20, 405])
 
-    firstAI = 0
-    secondAI = 0
-    thirdAI = 0
-    while (firstAI or secondAI or thirdAI) < 1:
-        for event in pygame.event.get():
-            if event.type == QUIT:
-                pygame.quit()
-                sys.exit()
-            elif event.type == MOUSEBUTTONDOWN:
-                mouse = pygame.mouse.get_pos()
-                if aiPlayerButtons[0].pressed(mouse):
-                    clickSound()
-                    firstAI += 1
-                if aiPlayerButtons[1].pressed(mouse):
-                    clickSound()
-                    secondAI += 1
-                if aiPlayerButtons[2].pressed(mouse):
-                    clickSound()
-                    thirdAI += 1
+        screen.blit(playerATK1, [20, 360])
+        screen.blit(playerATK2, [140, 445])
+        screen.blit(playerATK3, [20, 505])
 
-    # Create new frame
-    screen.blit(Variables.bgImage, [0, 0])
+        #TODO: put def value below, and atk value right side
 
-    pygame.display.update()
+        Dialog("CLICK ON WHICH UNIT YOU WANT TO ATTACK WITH...", 70, 100)
 
-    while len(team) >= 1 and len(ai) >= 1:
+        pygame.display.update()
+
+        while (firstPlayer or secondPlayer or thirdPlayer) < 1:
+            for event in pygame.event.get():
+                if event.type == QUIT:
+                    pygame.quit()
+                    sys.exit()
+                elif event.type == MOUSEBUTTONDOWN:
+                    mouse = pygame.mouse.get_pos()
+                    if playerATKButton[0].pressed(mouse):
+                        clickSound()
+                        firstPlayer += 1
+                    if playerATKButton[1].pressed(mouse):
+                        clickSound()
+                        secondPlayer += 1
+                    if playerATKButton[2].pressed(mouse):
+                        clickSound()
+                        thirdPlayer += 1
+
+        # Create new frame
+        screen.blit(Variables.bgImage, [0, 0])
+
+        drawAIPlayers(aiPlayerButtons[0], aiPlayerButtons[1], aiPlayerButtons[2], ai[0].job, ai[1].job, ai[2].job, ai[0].health, ai[1].health, ai[2].health)
+
+        #TODO: Make this into a function so its cleaner to see
+        aiPlayerName1 = Variables.fontSub.render(str(ai[0].name), True, Color.white)
+        aiPlayerName2 = Variables.fontSub.render(str(ai[1].name), True, Color.white)
+        aiPlayerName3 = Variables.fontSub.render(str(ai[2].name), True, Color.white)
+
+        aiPlayerHP1 = Variables.fontSub.render("HP: " + str(ai[0].health), True, Color.white)
+        aiPlayerHP2 = Variables.fontSub.render("HP: " + str(ai[1].health), True, Color.white)
+        aiPlayerHP3 = Variables.fontSub.render("HP: " + str(ai[2].health), True, Color.white)
+
+        aiPlayerDEF1 = Variables.fontSub.render("DEF: " + str(ai[0].defend), True, Color.white)
+        aiPlayerDEF2 = Variables.fontSub.render("DEF: " + str(ai[1].defend), True, Color.white)
+        aiPlayerDEF3 = Variables.fontSub.render("DEF: " + str(ai[2].defend), True, Color.white)
+
+        screen.blit(aiPlayerName1, [710, 230])
+        screen.blit(aiPlayerName2, [590, 315])
+        screen.blit(aiPlayerName3, [710, 390])
+
+        screen.blit(aiPlayerHP1, [710, 250])
+        screen.blit(aiPlayerHP2, [590, 335])
+        screen.blit(aiPlayerHP3, [710, 405])
+
+        screen.blit(aiPlayerDEF1, [710, 365])
+        screen.blit(aiPlayerDEF2, [590, 445])
+        screen.blit(aiPlayerDEF3, [710, 510])
+
+        Dialog("CLICK ON WHICH ENEMY YOU WANT TO ATTACK...", 100, 100)
+
+        pygame.display.update()
+
+        while (firstAI or secondAI or thirdAI) < 1:
+            for event in pygame.event.get():
+                if event.type == QUIT:
+                    pygame.quit()
+                    sys.exit()
+                elif event.type == MOUSEBUTTONDOWN:
+                    mouse = pygame.mouse.get_pos()
+                    if aiPlayerButtons[0].pressed(mouse):
+                        clickSound()
+                        firstAI += 1
+                    if aiPlayerButtons[1].pressed(mouse):
+                        clickSound()
+                        secondAI += 1
+                    if aiPlayerButtons[2].pressed(mouse):
+                        clickSound()
+                        thirdAI += 1
+
+        # Create new frame
+        screen.blit(Variables.bgImage, [0, 0])
+
+        pygame.display.update()
 
         num_attacker = 0
         num_enemy = 0
@@ -529,26 +589,23 @@ def gameLoop():
                     num_attacker += 1
                     firstPlayer = 0
                 else:
-                    print("Attacker is dead already")
-                    print("Choose another attacker")
+                    break
 
             if secondPlayer == 1:
-                if team[1].health > 1:
+                if team[1].health > 0:
                     attacker = team[1]
                     num_attacker += 1
                     secondPlayer = 0
                 else:
-                    print("Attacker is dead already")
-                    print("Choose another attacker")
+                    break
 
             if thirdPlayer == 1:
-                if team[2].health > 1:
+                if team[2].health > 0:
                     attacker = team[2]
                     num_attacker += 1
                     thirdPlayer = 0
                 else:
-                    print("Attacker is dead already")
-                    print("Choose another attacker")
+                    break
 
         while num_enemy < 1:
             if firstAI == 1:
@@ -557,46 +614,59 @@ def gameLoop():
                     num_enemy += 1
                     firstAI = 0
                 else:
-                    print("Defender is dead already")
-                    print("Choose another attacker")
+                    break
+
             if secondAI == 1:
                 if ai[1].health > 0:
                     defender = ai[1]
                     num_enemy += 1
                     secondAI = 0
                 else:
-                    print("Defender is dead already")
-                    print("Choose another attacker")
+                    break
+
             if thirdAI == 1:
                 if ai[2].health > 0:
                     defender = ai[2]
                     num_enemy += 1
                     thirdAI = 0
                 else:
-                    print("Defender is dead already")
-                    print("Choose another attacker")
+                    break
 
         user_turn = attack_func(attacker, defender)
 
         print(
             f'''level {attacker.rank} {attacker.name} deals {user_turn} dmg to {defender.name} and gained {user_turn} exp
             {attacker.name} attack: {attacker.attack} defence: {attacker.defend}
-            total exp: {attacker.experience}, remaining hp = {attacker.hp}''')
+            total exp: {attacker.experience}, remaining hp = {attacker.health}''')
 
         print(
             f'''level {defender.rank} {defender.name} received {user_turn} dmg frome {attacker.name} and gained {defender.defend} exp
             {defender.name} attack: {defender.attack} defence: {defender.defend}
-            total exp: {defender.experience}, remaining hp = {defender.hp}''')
+            total exp: {defender.experience}, remaining hp = {defender.health}''')
 
-        attacker = ai_attackers(ai)
-        defender = user_defenders(team)
+        attacker, defender = ai_attackers(ai, team)
         ai_turn = attack_func(attacker, defender)
 
         print(f'''level {attacker.rank} {attacker.name} deals {ai_turn} dmg to {defender.name} and gained {ai_turn} exp
             {attacker.name} attack: {attacker.attack} defence: {attacker.defend}
-            total exp: {attacker.exp}, remaining hp = {attacker.hp}''')
+            total exp: {attacker.experience}, remaining hp = {attacker.health}''')
 
         print(
-            f'''level {defender.level} {defender.name} received {ai_turn} dmg from {attacker.name} and gained {defender.defence} exp
-            {defender.name} attack: {defender.attack} defence: {defender.defence}
-            total exp: {defender.exp}, remaining hp = {defender.hp}''')
+            f'''level {defender.rank} {defender.name} received {ai_turn} dmg from {attacker.name} and gained {defender.defend} exp
+            {defender.name} attack: {defender.attack} defence: {defender.defend}
+            total exp: {defender.experience}, remaining hp = {defender.health}''')
+
+        user_team_hp = team[0].health + team[1].health + team[2].health
+        ai_team_hp = ai[0].health + ai[1].health + ai[2].health
+
+    text = Variables.font.render("You lost. Game over.", True, Color.white)
+    if user_team_hp == 0:
+        text = Variables.font.render("You lost. Game over.", True, Color.white)
+    if ai_team_hp == 0:
+        text = Variables.font.render("You won. Congrats!!.", True, Color.white)
+
+    screen.blit(Variables.bgImage, [0, 0])
+
+    screen.blit(text, [220, 75])
+
+    pygame.display.update()

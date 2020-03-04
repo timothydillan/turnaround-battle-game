@@ -24,6 +24,21 @@ class Warrior:
                             randint(5, 10), 0, 1,)
         return warrior_char
 
+    def check_level_up(self):
+        if self.experience > 99:
+            self.rank += 1
+            self.attack = round(self.attack * 1.05, 2)
+            self.defend = round(self.defend * 1.05, 2)
+            self.experience = 0
+
+    def check_die(self):
+        if self.health <= 0:
+            self.health = 0
+            self.attack = 0
+            self.defend = 1000000
+            self.experience = 0
+            print(f'!!!!!!!{self.name} IS DEAD!!!!!!!!!!!!!!!!')
+
 
 class Tanker:
     def __init__(self, name, health, attack, defend, experience, rank):
@@ -45,4 +60,17 @@ class Tanker:
                             randint(10, 20), 0, 1,)
         return tanker_char
 
+    def check_level_up(self):
+        if self.experience > 99:
+            self.rank += 1
+            self.attack = round(self.attack * 1.05, 2)
+            self.defend = round(self.defend * 1.05, 2)
+            self.experience = 0
 
+    def check_die(self):
+        if self.health <= 0:
+            self.health = 0
+            self.attack = 0
+            self.defend = 1000000
+            self.experience = 0
+            print(f'!!!!!!!{self.name} IS DEAD!!!!!!!!!!!!!!!!')
