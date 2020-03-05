@@ -44,7 +44,8 @@ class Variables():
     aI2Y = 375
     textX = 150
     textY = 75
-    gameLog = open('gameLog.txt', 'a')
+    # Need to change from w to a after running w once.
+    gameLog = open('gameLog.txt', 'w')
 
 class Color():
     black = (0, 0, 0)
