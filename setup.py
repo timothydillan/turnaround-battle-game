@@ -359,6 +359,15 @@ def ai_attackers(ai_team, target_team):
     user_defender = target_team[user_team_defend.index(min(user_team_defend))]
     return ai_attacker, user_defender
 
+def showPlayersAttribute(player0, player1, player2, x0, y0, x1, y1, y2):
+    playerText1 = Variables.fontSub.render(str(player0), True, Color.white)
+    playerText2 = Variables.fontSub.render(str(player1), True, Color.white)
+    playerText3 = Variables.fontSub.render(str(player2), True, Color.white)
+
+    screen.blit(playerText1, [x0, y0])
+    screen.blit(playerText2, [x1, y1])
+    screen.blit(playerText3, [x0, y2])
+
 def gameLoop():
     # Start game by creating a new frame (by loading a bg image)
     screen.blit(Variables.bgImage, [0, 0])
@@ -474,29 +483,10 @@ def gameLoop():
 
         # TODO: Make this into a function so its cleaner to see
 
-        playerName1 = Variables.fontSub.render(str(team[0].name), True, Color.white)
-        playerName2 = Variables.fontSub.render(str(team[1].name), True, Color.white)
-        playerName3 = Variables.fontSub.render(str(team[2].name), True, Color.white)
-
-        playerHP1 = Variables.fontSub.render("HP: " + str(team[0].health), True, Color.white)
-        playerHP2 = Variables.fontSub.render("HP: " + str(team[1].health), True, Color.white)
-        playerHP3 = Variables.fontSub.render("HP: " + str(team[2].health), True, Color.white)
-
-        playerATK1 = Variables.fontSub.render("ATK: " + str(team[0].attack), True, Color.white)
-        playerATK2 = Variables.fontSub.render("ATK: " + str(team[1].attack), True, Color.white)
-        playerATK3 = Variables.fontSub.render("ATK: " + str(team[2].attack), True, Color.white)
-
-        screen.blit(playerName1, [20, 230])
-        screen.blit(playerName2, [140, 315])
-        screen.blit(playerName3, [20, 390])
-
-        screen.blit(playerHP1, [20, 250])
-        screen.blit(playerHP2, [140, 335])
-        screen.blit(playerHP3, [20, 405])
-
-        screen.blit(playerATK1, [20, 360])
-        screen.blit(playerATK2, [140, 445])
-        screen.blit(playerATK3, [20, 505])
+        showPlayersAttribute(team[0].name, team[1].name, team[2].name, 20, 235, 140, 315, 390)
+        showPlayersAttribute("HP: " + str(team[0].health), "HP: " + str(team[1].health), "HP: " + str(team[2].health), 20, 250, 140, 335, 405)
+        showPlayersAttribute("ATK: " + str(team[0].attack), "ATK: " + str(team[1].attack), "ATK: " + str(team[2].attack), 20, 360, 140,
+                             445, 505)
 
         #TODO: put def value below, and atk value right side
 
@@ -527,29 +517,13 @@ def gameLoop():
         drawAIPlayers(aiPlayerButtons[0], aiPlayerButtons[1], aiPlayerButtons[2], ai[0].job, ai[1].job, ai[2].job, ai[0].health, ai[1].health, ai[2].health)
 
         #TODO: Make this into a function so its cleaner to see
-        aiPlayerName1 = Variables.fontSub.render(str(ai[0].name), True, Color.white)
-        aiPlayerName2 = Variables.fontSub.render(str(ai[1].name), True, Color.white)
-        aiPlayerName3 = Variables.fontSub.render(str(ai[2].name), True, Color.white)
 
-        aiPlayerHP1 = Variables.fontSub.render("HP: " + str(ai[0].health), True, Color.white)
-        aiPlayerHP2 = Variables.fontSub.render("HP: " + str(ai[1].health), True, Color.white)
-        aiPlayerHP3 = Variables.fontSub.render("HP: " + str(ai[2].health), True, Color.white)
-
-        aiPlayerDEF1 = Variables.fontSub.render("DEF: " + str(ai[0].defend), True, Color.white)
-        aiPlayerDEF2 = Variables.fontSub.render("DEF: " + str(ai[1].defend), True, Color.white)
-        aiPlayerDEF3 = Variables.fontSub.render("DEF: " + str(ai[2].defend), True, Color.white)
-
-        screen.blit(aiPlayerName1, [710, 230])
-        screen.blit(aiPlayerName2, [590, 315])
-        screen.blit(aiPlayerName3, [710, 390])
-
-        screen.blit(aiPlayerHP1, [710, 250])
-        screen.blit(aiPlayerHP2, [590, 335])
-        screen.blit(aiPlayerHP3, [710, 405])
-
-        screen.blit(aiPlayerDEF1, [710, 365])
-        screen.blit(aiPlayerDEF2, [590, 445])
-        screen.blit(aiPlayerDEF3, [710, 510])
+        showPlayersAttribute(ai[0].name, ai[1].name, ai[2].name, 710, 230, 590, 315, 390)
+        showPlayersAttribute("HP: " + str(ai[0].health), "HP: " + str(ai[1].health), "HP: " + str(ai[2].health),
+                             710, 250, 590, 335, 405)
+        showPlayersAttribute("DEF: " + str(ai[0].defend), "DEF: " + str(team[1].defend),
+                             "DEF: " + str(ai[2].defend), 710, 365, 590,
+                             445, 510)
 
         Dialog("CLICK ON WHICH ENEMY YOU WANT TO ATTACK...", 100, 100)
 
