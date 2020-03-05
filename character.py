@@ -37,7 +37,6 @@ class Warrior:
             self.attack = 0
             self.defend = 1000000
             self.experience = 0
-            print(f'!!!!!!!{self.name} IS DEAD!!!!!!!!!!!!!!!!')
 
 
 class Tanker:
@@ -73,4 +72,3 @@ class Tanker:
             self.attack = 0
             self.defend = 1000000
             self.experience = 0
-            print(f'!!!!!!!{self.name} IS DEAD!!!!!!!!!!!!!!!!')

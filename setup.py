@@ -6,33 +6,34 @@ from character import *
 import self
 from random import randint
 import copy
+from datetime import datetime
 
 # Initialize pygame and the pygame mixer and set screen size (width, height).
 pygame.mixer.pre_init(44100, -16, 2, 4096)
 pygame.init()
-screen = pygame.display.set_mode((800, 600))
-validChars = "`1234567890-=qwertyuiop[]\\asdfghjkl;'zxcvbnm,./"
-shiftChars = '~!@#$%^&*()_+QWERTYUIOP{}|ASDFGHJKL:"ZXCVBNM<>?'
-
+screen = pygame.display.set_mode((800, 650))
 
 class Variables():
     # Declare variables in a class so that its easier to call and cleaner.
     FPS = 30
     fpsClock = pygame.time.Clock()
+    validChars = "`1234567890-=qwertyuiop[]\\asdfghjkl;'zxcvbnm,./"
+    shiftChars = '~!@#$%^&*()_+QWERTYUIOP{}|ASDFGHJKL:"ZXCVBNM<>?'
     font = pygame.font.Font('font/SHPinscher-Regular.otf', 90)
     fontText = pygame.font.Font("font/slkscr.ttf", 24)
     fontSub = pygame.font.Font("font/slkscr.ttf", 16)
     pygame.display.set_caption("RPG Game")
     bgImage = pygame.image.load('images/bg.png')
     icon = pygame.image.load("images/icon.png")
-    startGame = pygame.image.load('images/startgame.png')
     pygame.display.set_icon(icon)
     warriorImg = pygame.image.load('images/warrior.png')
     tankerImg = pygame.image.load('images/tanker.png')
     warriorEnemyImg = pygame.image.load('images/warriorEnemy.png')
     tankerEnemyImg = pygame.image.load('images/tankerEnemy.png')
-    buttonImg = pygame.image.load('images/button.png')
     skullImg = pygame.image.load('images/skull.png')
+    tickImg = pygame.image.load('images/tick.png')
+    bgImage2 = pygame.image.load('images/bg2.png')
+    dateTimeObj = datetime.now()
     player1X = 150
     player1Y = 385
     player2X = 50
@@ -43,7 +44,7 @@ class Variables():
     aI2Y = 375
     textX = 150
     textY = 75
-
+    gameLog = open('gameLog.txt', 'a')
 
 class Color():
     black = (0, 0, 0)
@@ -79,17 +80,17 @@ class TextBox(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
         self.text = ""
-        self.font = pygame.font.Font(None, 30)
+        self.font = pygame.font.Font("font/slkscr.ttf", 30)
         self.image = self.font.render('Input character name: ', False, Color.white)
         self.rect = self.image.get_rect()
         self.shifted = False
 
     # Create a function to add captial/non-capital texts
     def AddChar(self, char):
-        if char in validChars and not self.shifted:
+        if char in Variables.validChars and not self.shifted:
             self.text += char
-        elif char in validChars and self.shifted:
-            self.text += shiftChars[validChars.index(char)]
+        elif char in Variables.validChars and self.shifted:
+            self.text += Variables.shiftChars[Variables.validChars.index(char)]
         self.Update()
     # The actual update function so that we can use this while adding characters
     def Update(self):
@@ -144,7 +145,7 @@ def MenuButton(msg, x, y, w, h, ic, ac, action=None):
 
 def bgMusic():
     # A function used to play a song that we define.
-    bgsound = pygame.mixer.music.load('Sound/backgroundmusic.ogg')
+    pygame.mixer.music.load('Sound/backgroundmusic.ogg')
     # Loop the music.
     pygame.mixer.music.play(-1)
 
@@ -197,39 +198,54 @@ def TextBox():
         tankButton = Button()
         tankButton.assignImage(Variables.tankerEnemyImg)
         tankButton.setCoords(500, 340)
+
+        tickButton = Button()
+        tickButton.assignImage(Variables.tickImg)
+        tickButton.setCoords(375, 510)
+
         warriorButton.drawButton(Variables.warriorImg)
         tankButton.drawButton(Variables.tankerEnemyImg)
+        tickButton.drawButton(Variables.tickImg)
 
         Dialog('Give a name for each of your players!', 100, 100)
         Dialog('Choose   units to start your adventure!', 100, 150)
+
+        confirmation = Variables.fontSub.render("After you\'re done, press enter and click on the tick", True, Color.white)
+        confirmationNext = Variables.fontSub.render("Then choose your next character!", True, Color.white)
+
+        screen.blit(confirmation, [160, 560])
+        screen.blit(confirmationNext, [230, 580])
 
         screen.blit(textBox.image, textBox.rect)
         pygame.display.update()
         for e in pygame.event.get():
             if e.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
                 running = False
-            if e.type == pygame.KEYUP:
+            elif e.type == pygame.KEYUP:
                 if e.key in [pygame.K_RSHIFT, pygame.K_LSHIFT]:
                     textBox.shifted = False
-            if e.type == pygame.KEYDOWN:
+            elif e.type == pygame.KEYDOWN:
                 textBox.AddChar(pygame.key.name(e.key))
                 if e.key == pygame.K_SPACE:
                     textBox.text += " "
                     textBox.Update()
-                if e.key in [pygame.K_RSHIFT, pygame.K_LSHIFT]:
+                elif e.key in [pygame.K_RSHIFT, pygame.K_LSHIFT]:
                     textBox.shifted = True
-                if e.key == pygame.K_BACKSPACE:
+                elif e.key == pygame.K_BACKSPACE:
                     textBox.text = textBox.text[:-1]
                     textBox.Update()
-                if e.key == pygame.K_RETURN:
+                elif e.key == pygame.K_RETURN:
                     if len(textBox.text) > 0:
                         name.append(textBox.text)
                         textBox.text = ""
                         textBox.Update()
-                        running = False
+            if e.type == MOUSEBUTTONDOWN:
+                mouse = pygame.mouse.get_pos()
+                if tickButton.pressed(mouse):
+                    running = False
 
-
-# joes ver (but i added the global cuz we need to access it out of the scope)
 def genAIPlayers(copyTeam):
     aiTeam = copy.deepcopy(copyTeam)
 
@@ -246,7 +262,6 @@ def genAIPlayers(copyTeam):
             aiPlayer.defend = randint(10, 20)
 
     return aiTeam
-
 
 def drawAIPlayers(button0, button1, button2, job0, job1, job2, hp0, hp1, hp2):
 
@@ -329,34 +344,34 @@ def drawPlayers(button0, button1, button2, job0, job1, job2, hp0, hp1, hp2):
         button2.setCoords(0, 0)
         screen.blit(Variables.skullImg, [0, 420])
 
-def attack_func(turn_attacker, turn_defender):
+def attackFunc(turnAttacker, turnDefender):
     ranNum = randint(5, 10)
-    dmg = int(turn_attacker.attack + ranNum - turn_defender.defend)
+    dmg = int(turnAttacker.attack + ranNum - turnDefender.defend)
     if dmg > 0:
-        turn_defender.health -= dmg
-        turn_attacker.experience += dmg
-        turn_defender.experience += turn_defender.defend
-        Tanker.check_level_up(turn_attacker)
-        Tanker.check_level_up(turn_defender)
-        Tanker.check_die(turn_attacker)
-        Tanker.check_die(turn_defender)
+        turnDefender.health -= dmg
+        turnAttacker.experience += dmg
+        turnDefender.experience += turnDefender.defend
+        Tanker.check_level_up(turnAttacker)
+        Tanker.check_level_up(turnDefender)
+        Tanker.check_die(turnAttacker)
+        Tanker.check_die(turnDefender)
         return dmg
     elif dmg < 0:
-        turn_attacker.experience += int(turn_attacker.attack + ranNum)
-        turn_defender.experience += int(turn_attacker.attack + ranNum)
-        Tanker.check_level_up(turn_attacker)
-        Tanker.check_level_up(turn_defender)
-        Tanker.check_die(turn_attacker)
-        Tanker.check_die(turn_defender)
+        turnAttacker.experience += int(turnAttacker.attack + ranNum)
+        turnDefender.experience += int(turnAttacker.attack + ranNum)
+        Tanker.check_level_up(turnAttacker)
+        Tanker.check_level_up(turnDefender)
+        Tanker.check_die(turnAttacker)
+        Tanker.check_die(turnDefender)
         return dmg
     else:
         return dmg
 
-def ai_attackers(ai_team, target_team):
-    ai_team_attack = [ai_team[0].attack, ai_team[1].attack, ai_team[2].attack]
-    ai_attacker = ai_team[ai_team_attack.index(max(ai_team_attack))]
-    user_team_defend = [target_team[0].defend, target_team[1].defend, target_team[2].defend]
-    user_defender = target_team[user_team_defend.index(min(user_team_defend))]
+def aiAttack(aiTeam, targetTeam):
+    ai_team_attack = [aiTeam[0].attack, aiTeam[1].attack, aiTeam[2].attack]
+    ai_attacker = aiTeam[ai_team_attack.index(max(ai_team_attack))]
+    user_team_defend = [targetTeam[0].defend, targetTeam[1].defend, targetTeam[2].defend]
+    user_defender = targetTeam[user_team_defend.index(min(user_team_defend))]
     return ai_attacker, user_defender
 
 def showPlayersAttribute(player0, player1, player2, x0, y0, x1, y1, y2):
@@ -367,6 +382,16 @@ def showPlayersAttribute(player0, player1, player2, x0, y0, x1, y1, y2):
     screen.blit(playerText1, [x0, y0])
     screen.blit(playerText2, [x1, y1])
     screen.blit(playerText3, [x0, y2])
+
+def showGameLog(attacker, dmg, defender, xp, x, y):
+    logText = Variables.fontSub.render( "[Game Message] " + str(attacker) + " dealt " + str(dmg) + " dmg to " + str(defender) + " and gained "
+    + str(xp) + " exp.", True, Color.black)
+
+    screen.blit(logText, [x, y])
+
+def saveGameLog(rank, attacker, dmg, defender, xp):
+    Variables.gameLog.write("[" + str(Variables.dateTimeObj) + "] " + "Level {} ".format(rank) + "Unit 1: " + str(attacker) + " dealt " + str(dmg) + " dmg to " + str(defender) + " and gained "
+    + str(xp) + " exp." "\n \n")
 
 def gameLoop():
     # Start game by creating a new frame (by loading a bg image)
@@ -432,6 +457,7 @@ def gameLoop():
                     clickSound()
                     # ask user to input name
                     TextBox()
+
     # assign the default names into the name received
     team[0].name = name[0]
     team[1].name = name[1]
@@ -441,18 +467,25 @@ def gameLoop():
 
     # after the loop ends, create a new frame
     screen.blit(Variables.bgImage, [0, 0])
-
+    Variables.gameLog.write("========================== PSB BATTLE GAME ==========================\n")
     # now lets actually render the text from the while loop before
     if warriorChoice > 0:
         # the if statement is needed because if the player chooses 3 tankers,
         # that means the warriortext will be null, which will result in a crash
         screen.blit(warriorText, [260, 320])
         screen.blit(Variables.warriorImg, [280, 350])
+        Variables.gameLog.write("[" + str(Variables.dateTimeObj)+ "] " + str(warriorChoice) +  " Warriors Chosen \n")
     if tankChoice > 0:
         # the if statement is needed because if the player chooses 3 tankers,
         # that means the tankertext will be null, which will result in a crash
         screen.blit(tankerText, [433, 320])
         screen.blit(Variables.tankerEnemyImg, [443, 350])
+        Variables.gameLog.write("[" + str(Variables.dateTimeObj) + "] " + str(tankChoice) + " Tankers Chosen \n")
+
+    Variables.gameLog.write("\n========================== INITIALIZATION OF UNITS==========================\n")
+    Variables.gameLog.write("[" + str(Variables.dateTimeObj) + "] " + "Name of unit 1: " + team[0].name + " ATK Value: " + str(team[0].attack) + " DEF Value: " + str(team[0].defend) +" Class: " + team[0].job + "\n")
+    Variables.gameLog.write("[" + str(Variables.dateTimeObj) + "] " + "Name of unit 2: " + team[1].name + " ATK Value: " + str(team[1].attack) + " DEF Value: " + str(team[1].defend) + " Class: " + team[1].job + "\n")
+    Variables.gameLog.write("[" + str(Variables.dateTimeObj) + "] " + "Name of unit 3: " + team[2].name + " ATK Value: " + str(team[2].attack) + " DEF Value: " + str(team[2].defend) + " Class: " + team[2].job + "\n \n")
     # Update the display again so
     # we can continue and remove the
     # elements before (not directly, we're just removing the rendered things)
@@ -470,6 +503,9 @@ def gameLoop():
 
     user_team_hp = team[0].health + team[1].health + team[2].health
     ai_team_hp = ai[0].health + ai[1].health + ai[2].health
+
+    Variables.gameLog.write("========================== BATTLE SEQUENCE ==========================\n")
+
     while user_team_hp > 0 and ai_team_hp > 0:
 
         firstPlayer = 0
@@ -481,16 +517,12 @@ def gameLoop():
 
         drawPlayers(playerATKButton[0], playerATKButton[1], playerATKButton[2], team[0].job, team[1].job, team[2].job, team[0].health, team[1].health, team[2].health)
 
-        # TODO: Make this into a function so its cleaner to see
+        Dialog("CLICK ON WHICH UNIT YOU WANT TO ATTACK WITH...", 80, 100)
 
         showPlayersAttribute(team[0].name, team[1].name, team[2].name, 20, 235, 140, 315, 390)
         showPlayersAttribute("HP: " + str(team[0].health), "HP: " + str(team[1].health), "HP: " + str(team[2].health), 20, 250, 140, 335, 405)
-        showPlayersAttribute("ATK: " + str(team[0].attack), "ATK: " + str(team[1].attack), "ATK: " + str(team[2].attack), 20, 360, 140,
+        showPlayersAttribute("ATK: " + str(int(team[0].attack)), "ATK: " + str(int(team[1].attack)), "ATK: " + str(int(team[2].attack)), 20, 360, 140,
                              445, 505)
-
-        #TODO: put def value below, and atk value right side
-
-        Dialog("CLICK ON WHICH UNIT YOU WANT TO ATTACK WITH...", 70, 100)
 
         pygame.display.update()
 
@@ -512,18 +544,36 @@ def gameLoop():
                         thirdPlayer += 1
 
         # Create new frame
-        screen.blit(Variables.bgImage, [0, 0])
+        screen.blit(Variables.bgImage2, [0, 0])
+
+        aiDefend1 = ai[0].defend
+        if ai[0].health <= 0:
+            aiDefend1 = 0
+
+        aiDefend2 = ai[1].defend
+        if ai[1].health <= 0:
+            aiDefend2 = 0
+
+        aiDefend3 = ai[2].defend
+        if ai[2].health <= 0:
+            aiDefend3 = 0
 
         drawAIPlayers(aiPlayerButtons[0], aiPlayerButtons[1], aiPlayerButtons[2], ai[0].job, ai[1].job, ai[2].job, ai[0].health, ai[1].health, ai[2].health)
-
-        #TODO: Make this into a function so its cleaner to see
 
         showPlayersAttribute(ai[0].name, ai[1].name, ai[2].name, 710, 230, 590, 315, 390)
         showPlayersAttribute("HP: " + str(ai[0].health), "HP: " + str(ai[1].health), "HP: " + str(ai[2].health),
                              710, 250, 590, 335, 405)
-        showPlayersAttribute("DEF: " + str(ai[0].defend), "DEF: " + str(team[1].defend),
-                             "DEF: " + str(ai[2].defend), 710, 365, 590,
+
+        showPlayersAttribute("DEF: " + str(int(aiDefend1)), "DEF: " + str(int(aiDefend2)),
+                             "DEF: " + str(int(aiDefend3)), 710, 365, 590,
                              445, 510)
+
+        Variables.gameLog.write("[" + str(Variables.dateTimeObj) + "] " + "Unit 1: " + ai[0].name + " ATK Value: " + str(
+            ai[0].attack) + " HP Value: " + str(ai[0].health) + "\n")
+        Variables.gameLog.write("[" + str(Variables.dateTimeObj) + "] " + "Unit 2: " + ai[1].name + " ATK Value: " + str(
+            ai[1].attack) + " HP Value: " + str(ai[1].health) + "\n")
+        Variables.gameLog.write("[" + str(Variables.dateTimeObj) + "] " + "Unit 3: " + ai[2].name + " ATK Value: " + str(
+            ai[2].attack) + " HP Value: " + str(ai[2].health) + "\n \n")
 
         Dialog("CLICK ON WHICH ENEMY YOU WANT TO ATTACK...", 100, 100)
 
@@ -547,7 +597,7 @@ def gameLoop():
                         thirdAI += 1
 
         # Create new frame
-        screen.blit(Variables.bgImage, [0, 0])
+        screen.blit(Variables.bgImage2, [0, 0])
 
         pygame.display.update()
 
@@ -606,41 +656,43 @@ def gameLoop():
                 else:
                     break
 
-        user_turn = attack_func(attacker, defender)
+        user_turn = attackFunc(attacker, defender)
 
-        print(
-            f'''level {attacker.rank} {attacker.name} deals {user_turn} dmg to {defender.name} and gained {user_turn} exp
-            {attacker.name} attack: {attacker.attack} defence: {attacker.defend}
-            total exp: {attacker.experience}, remaining hp = {attacker.health}''')
+        showGameLog(attacker.name, user_turn, defender.name, int(attacker.experience), 30, 570)
 
-        print(
-            f'''level {defender.rank} {defender.name} received {user_turn} dmg frome {attacker.name} and gained {defender.defend} exp
-            {defender.name} attack: {defender.attack} defence: {defender.defend}
-            total exp: {defender.experience}, remaining hp = {defender.health}''')
+        saveGameLog(attacker.rank, attacker.name, user_turn, defender.name, int(attacker.experience))
 
-        attacker, defender = ai_attackers(ai, team)
-        ai_turn = attack_func(attacker, defender)
+        attacker, defender = aiAttack(ai, team)
+        ai_turn = attackFunc(attacker, defender)
 
-        print(f'''level {attacker.rank} {attacker.name} deals {ai_turn} dmg to {defender.name} and gained {ai_turn} exp
-            {attacker.name} attack: {attacker.attack} defence: {attacker.defend}
-            total exp: {attacker.experience}, remaining hp = {attacker.health}''')
+        showGameLog(attacker.name, ai_turn, defender.name, int(attacker.experience), 30, 590)
 
-        print(
-            f'''level {defender.rank} {defender.name} received {ai_turn} dmg from {attacker.name} and gained {defender.defend} exp
-            {defender.name} attack: {defender.attack} defence: {defender.defend}
-            total exp: {defender.experience}, remaining hp = {defender.health}''')
+        saveGameLog(attacker.rank, attacker.name, user_turn, defender.name, int(attacker.experience))
 
         user_team_hp = team[0].health + team[1].health + team[2].health
         ai_team_hp = ai[0].health + ai[1].health + ai[2].health
 
+    Variables.gameLog.write("\n========================== GAME FINISH ==========================\n")
+
     text = Variables.font.render("You lost. Game over.", True, Color.white)
+
     if user_team_hp == 0:
         text = Variables.font.render("You lost. Game over.", True, Color.white)
+        Variables.gameLog.write("Game status: You lost. Game over.")
     if ai_team_hp == 0:
-        text = Variables.font.render("You won. Congrats!!.", True, Color.white)
+        text = Variables.font.render("You won. Congrats!!!", True, Color.white)
+        Variables.gameLog.write("Game status: You won. Congrats!!!")
 
-    screen.blit(Variables.bgImage, [0, 0])
+    screen.blit(Variables.bgImage, [0,0])
 
-    screen.blit(text, [220, 75])
+    Dialog("CLICK ANYWHERE TO CONTINUE...", 100, 100)
+
+    screen.blit(text, [100, 120])
 
     pygame.display.update()
+
+    startScreen()
+
+    Variables.gameLog.close()
+
+
