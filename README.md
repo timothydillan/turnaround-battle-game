@@ -1,7 +1,7 @@
 # python-assignment
-PSB Python Assignment
 
-This is the github page for our PSB Python Assignment.
+
+This is the github page for our Python Assignment.
 
 
 Group Members:
@@ -14,4 +14,3 @@ Group Members:
 5. Nguyen Tien Vu
 6. Nguyen Trung Hieu
 
-If you downloaded or is copying this project, pelase contact us, lol.
