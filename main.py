@@ -1,7 +1,10 @@
 # Initialize libraries needed for the game.
-import pygame, sys, time
+# All things taken from the internet are put in referenceList.txt
+
 from pygame.locals import *
 from setup import *
+from sounds import bgMusic
+from gui import Title, Player
 
 def __main__():
     # Play the background music
@@ -9,18 +12,19 @@ def __main__():
     run = True
     while run:
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:
+            if event.type == QUIT:
                 pygame.quit()
                 sys.exit()
                 run = False
-        #Create a new frame
+        # Create a new frame
         screen.blit(Variables.bgImage, [0, 0])
         # Create main menu buttons
-        MenuButton("New Game", 325, 400, 150, 30, Color.white, Color.gray, "play")
-        MenuButton("Load Game", 325, 450, 150, 30, Color.white, Color.gray, "load")
-        MenuButton("Quit", 325, 500, 150, 30,  Color.white, Color.gray, "quit")
+        menuButton("New Game", 325, 400, 150, 30, Color.white, Color.gray, 'play')
+        menuButton("Load Game", 325, 450, 150, 30, Color.white, Color.gray, 'load')
+        menuButton("Credits", 325, 500, 150, 30, Color.white, Color.gray, 'credits')
+        menuButton("Quit", 325, 550, 150, 30,  Color.white, Color.gray, 'quit')
         # Render PSB Battle Game as the title
-        Title('PSB Battle Game', Variables.textX, Variables.textY)
+        Title('First Fantasia', Variables.textX, Variables.textY)
         # Draw players for the main menu (UI Purposes)
         Player()
         # Update the screen so that we can see everything we rendered before.

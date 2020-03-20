@@ -1,0 +1,13 @@
+Libraries needed to be installed:
+Pygame = https://www.pygame.org/wiki/GettingStarted#Pygame%20Installation
+Self = https://pypi.org/project/self/
+Copy = https://docs.python.org/2/library/copy.html
+Shelve = https://docs.python.org/3/library/shelve.html
+
+To run the game, open your command prompt and change your directory to the game's directory (using cd "folder path").
+
+Then after changing the directory, on the same command prompt, type python main.py
+
+After every game, an event log text file will be generated named gameLog.txt in the same folder.
+
+Other than that, after saving the game, there will be a file called firstFantasia.db in which the data is stored there.

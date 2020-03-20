@@ -1,7 +1,7 @@
 # python-assignment
+PSB Python Assignment
 
-
-This is the github page for our Python Assignment.
+This is the github page for our PSB Python Assignment.
 
 
 Group Members:
@@ -13,4 +13,3 @@ Group Members:
 4. Timothy Dillan Tandjung
 5. Nguyen Tien Vu
 6. Nguyen Trung Hieu
-

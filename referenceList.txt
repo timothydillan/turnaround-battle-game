@@ -1,0 +1,39 @@
+Things that we took from the internet:
+
+Background Music:
+https://soundimage.org/fantasywonder/
+Our Mountain_v003
+
+SHPinscher font:
+https://www.fontsquirrel.com/fonts/sh-pinscher
+
+Silkscreen font (slkscr.ttf):
+https://www.dafont.com/silkscreen.font
+
+Background image:
+https://www.reddit.com/r/wargroove/comments/6l2s7a/i_took_the_background_from_the_games_website_and/
+Taken from war groove.
+
+Tanker image:
+https://www.hiclipart.com/free-transparent-background-png-clipart-fpacm
+
+Warrior image:
+https://www.pngguru.com/free-transparent-background-png-clipart-ehlvv
+
+Skull image:
+https://www.cleanpng.com/png-pixel-art-skull-bone-3896753/
+
+Click sound:
+https://www.youtube.com/watch?v=h6_8SlZZwvQ
+
+Save sound:
+https://www.youtube.com/watch?v=_mhsP4AGJPc
+
+Button for characters:
+https://github.com/ThomasDubyak/pykemon/blob/6e17137fe76a564f38b9f852c5c9a25d4e18350c/pykemon_v2.0.py#L144
+
+Tanker enemy image:
+https://www.kickstarter.com/projects/dhindes/wildfire-0/posts/1219899
+
+Warrior enemy image:
+https://www.newgrounds.com/art/view/griffenclaw/fireball-pixel-art

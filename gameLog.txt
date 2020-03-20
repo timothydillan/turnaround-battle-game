@@ -1,0 +1,5 @@
+========================== BATTLE SEQUENCE ==========================
+[2020-03-12 23:20:11.465953] Player 1: kontol ATK Value: 15 HP Value: 100
+[2020-03-12 23:20:11.465953] Player 2: kontol1 ATK Value: 7 HP Value: 100
+[2020-03-12 23:20:11.465953] Player 3: kontol2 ATK Value: 15 HP Value: 100
+ 
