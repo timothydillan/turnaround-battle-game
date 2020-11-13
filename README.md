@@ -1,8 +1,4 @@
 # python-assignment
-PSB Python Assignment
-
-This is the github page for our PSB Python Assignment.
-
 
 Group Members:
 
